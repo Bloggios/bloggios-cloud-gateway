@@ -1,0 +1,53 @@
+server:
+  port: 7000
+  servlet:
+    session:
+      cookie:
+        same-site: none
+spring:
+  application:
+    name: bloggios-cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: auth-provider-application
+          uri: lb://auth-provider-application
+          predicates:
+            - Path=/auth-provider/**, /oauth2/**, /oauth/**
+        - id: discovery-server
+          uri: http://${SERVER_HOST:localhost}:8761
+          predicates:
+            - Path=/eureka/web
+          filters:
+            - SetPath=/
+        - id: discovery-server-static
+          uri: http://${SERVER_HOST:localhost}:8761
+          predicates:
+            - Path=/eureka/**
+        - id: bloggios-mail-service
+          uri: lb://bloggios-mail-service
+          predicates:
+            - Path=/mail-service/**
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL}
+    enabled: true
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+logging:
+  level:
+    root: ${LOGGING_LEVEL:info}

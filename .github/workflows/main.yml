@@ -1,0 +1,113 @@
+name: bloggios-cloud-gateway devsandbox
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+      - uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Cleaning Docker File
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.V4_HOST }}
+          username: ${{ secrets.V4_USERNAME }}
+          password: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /root/bloggios-deployment-docker-files
+            git stash
+            git pull origin main
+
+      - name: Cleaning File
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.V4_HOST }}
+          username: ${{ secrets.V4_USERNAME }}
+          password: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /root/microservices/bloggios-cloud-gateway
+            git stash
+            git pull origin main
+
+      - name: Add Logback File
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.V4_HOST }}
+          username: ${{ secrets.V4_USERNAME }}
+          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          port: 22
+          script: |
+            rm /root/microservices/bloggios-cloud-gateway/src/main/resources/gateway-logback.xml
+            cp /root/secrets/logback/gateway-logback.xml /root/microservices/bloggios-cloud-gateway/src/main/resources
+
+      - name: Stopping Container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.V4_HOST }}
+          username: ${{ secrets.V4_USERNAME }}
+          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /root/bloggios-deployment-docker-files
+            set +e
+            docker-compose -f docker-compose-devsandbox.yml stop bloggios-cloud-gateway
+            docker rmi -f bloggios-cloud-gateway:1.0
+            set -e
+
+      - name: Generating Docker Image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.V4_HOST }}
+          username: ${{ secrets.V4_USERNAME }}
+          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /root/microservices/bloggios-cloud-gateway
+            chmod +x mvnw
+            ./mvnw clean package
+
+      - name: Deploy Docker Image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.V4_HOST }}
+          username: ${{ secrets.V4_USERNAME }}
+          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /root/bloggios-deployment-docker-files
+            docker-compose -f docker-compose-devsandbox.yml up -d bloggios-cloud-gateway
+
+      - name: Cleaning Targets
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.V4_HOST }}
+          username: ${{ secrets.V4_USERNAME }}
+          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /root/microservices/bloggios-cloud-gateway
+            rm target -r
