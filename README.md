@@ -29,18 +29,27 @@
 
 ## <a name="introduction">🤖 Introduction</a>
 
-Built using Java 17 and Spring Boot, the Bloggios 
+Bloggios Cloud Gateway is an advanced API Gateway developed with Java 17 and Spring Boot, designed to serve as a
+centralized entry point for managing, routing, and monitoring API requests. It facilitates seamless integration between
+microservices by providing robust features such as load balancing, security enforcement, rate limiting, and
+request/response transformation. With its scalable and efficient architecture, Bloggios Cloud Gateway ensures reliable
+and high-performance communication within cloud environments, making it an essential component for modern, distributed
+applications.
 
 ## Key Features
 
-- **User Authentication**: Manages login and registration processes, verifying credentials and issuing access tokens or session identifiers.
-- **Social Login Integration**: Allows authentication via social media accounts (Google, Facebook, Twitter) for alternative login options.
-- **Session and Cookie Management**: Generates and maintains session tokens or cookies to track user authentication status across multiple requests.
-- **OTP Management**: Handles the generation and validation of one-time passwords for 2FA or account recovery, adding an extra layer of security.
+- **Load Balancing:** Efficiently distributes incoming traffic across multiple servers to ensure high availability and
+  reliability of services.
+- **Rate Limiting:** Controls the rate of incoming requests to prevent abuse and ensure fair usage of resources.
+- **Dynamic Routing:** Routes incoming API requests to the appropriate backend services based on predefined rules and
+  conditions.
+- **Request/Response Transformation:** Modifies and transforms requests and responses to match the needs of different
+  microservices and clients.
+- **CORS Support:** Handles Cross-Origin Resource Sharing (CORS) to enable secure cross-domain requests and data sharing.
+- **Service Discovery Integration:** Automatically discovers and routes to available services in a dynamic microservices environment.
 
-The authentication server's comprehensive functionality ensures the security and integrity of the system while streamlining user authentication processes.
-
-Join our newly active Discord community for support, bug reporting, and feature requests. Here, we strive to address every issue, and developers and testers can collaborate and assist each other effectively.
+Join our newly active Discord community for support, bug reporting, and feature requests. Here, we strive to address
+every issue, and developers and testers can collaborate and assist each other effectively.
 
 <a href="https://discord.gg/sEerF8HuKC" target="_blank">
 <img src="https://img.shields.io/badge/-Join_our_Community-4258ff?style=for-the-badge&logoColor=white&logo=discord&color=5865F2" alt="Discord" />
@@ -50,14 +59,13 @@ Join our newly active Discord community for support, bug reporting, and feature 
 
 - Java 17
 - Spring Boot
-- PostgreSQL
-- Elasticsearch
-- OAuth2.0
-- Kafka
+- Spring Cloud Gateway
 
 ## <a name="documentation">🔋 API Documentation</a>
 
-To help you get started with our API and understand all its features and endpoints, we have created detailed documentation available on Postman. This documentation includes comprehensive information about each endpoint, including:
+To help you get started with our API and understand all its features and endpoints, we have created detailed
+documentation available on Postman. This documentation includes comprehensive information about each endpoint,
+including:
 
 - **Endpoint URLs**: Specific paths to access various functionalities.
 - **HTTP Methods**: The method type (GET, POST, PUT, DELETE, etc.) for each endpoint.
@@ -68,13 +76,18 @@ To help you get started with our API and understand all its features and endpoin
 
 To access the documentation:
 
-1. **Visit our Postman Documentation Page**: [Visit Documentation](https://www.postman.com/rohit-zip/workspace/bloggios/collection/34920421-dbc22257-2de7-4888-a0b1-69d0234bb3b4?action=share&source=copy-link&creator=34920421)
-2. **Explore the Collection**: Navigate through the collection to find detailed descriptions and examples for each endpoint.
-3. **Run Requests Directly in Postman**: Use the "Run in Postman" button to directly import the collection into your Postman workspace for testing and exploration.
+1. **Visit our Postman Documentation Page
+   **: [Visit Documentation](https://www.postman.com/rohit-zip/workspace/bloggios/collection/34920421-dbc22257-2de7-4888-a0b1-69d0234bb3b4?action=share&source=copy-link&creator=34920421)
+2. **Explore the Collection**: Navigate through the collection to find detailed descriptions and examples for each
+   endpoint.
+3. **Run Requests Directly in Postman**: Use the "Run in Postman" button to directly import the collection into your
+   Postman workspace for testing and exploration.
 
-By leveraging the Postman documentation, you can quickly integrate our API into your application and take full advantage of its capabilities.
+By leveraging the Postman documentation, you can quickly integrate our API into your application and take full advantage
+of its capabilities.
 
-For any further assistance, feel free to contact our support team or refer to the additional resources section in the documentation.
+For any further assistance, feel free to contact our support team or refer to the additional resources section in the
+documentation.
 
 ## <a name="quick-start">🤸 Quick Start</a>
 
@@ -87,10 +100,6 @@ Make sure you have the following installed on your machine:
 - Git
 - Java 17
 - Intellij Idea or any other IDE supports Spring Boot
-- PostgreSql
-- Elasticsearch
-- Kafka
-- Docker (If not want to install PostgreSQL, Elasticsearch and Kafka seperately)
 
 **Cloning the Repository**
 
@@ -105,6 +114,7 @@ We recommended Intellij Idea
 
 Make sure you have Java 17 Installed in your system
 Please execute the below command to check installed version of Java in your system
+
 ```bash
 java --version
 ```
@@ -114,20 +124,13 @@ java --version
 Navigate to `src/main/resources/application.yml` and add the required environment variables
 
 If you are new at setting environment variables the please go through the below videos
+
 - Intellij Idea [See Video](https://www.youtube.com/watch?v=jNOh4jQJG2U)
 - Eclipse or STS [See Video](https://www.youtube.com/watch?v=ypvGDkbp8Ac)
 
 ```env
-BOOTSTRAP_SERVER -> Link to kafka broker server. You can start kafka broker locally (localhost:9092)
-ES_PASSWORD -> Password of your Elasticsearch
-ES_SERVER -> Elastic Search password Link (localhost:9200)
-ES_USERNAME -> Elasticsearch Username
-GOOGLE_CLIENT_ID -> Give any random value or if want to test Google OAuth Locally then generate client id and secret from Google Developer Console
-GOOGLE_CLIENT_SECRET -> Give any random value or if want to test Google OAuth Locally then generate client id and secret from Google Developer Console
-POSTGRES_DATABASE -> Postgresql Database name
-POSTGRES_HOST -> Postgres Database Host
-POSTGRES_PASSWORD -> Postgres Database Password
-POSTGRES_USERNAME -> Postgresq Database Username
+EUREKA_URL: URL to service registry. (Leave it blank if you not want to connect)
+SERVER_HOST: IP address of Host Machine. (Add localhost if you are using service registry on local)
 ```
 
 Replace the placeholder values with your actual credentials
@@ -150,9 +153,11 @@ If you wish to contribute, you can,
 - Improve documentation.
 - Create content about Bloggios and share it with the world.
 
-> Please read [`CONTRIBUTING`](CONTRIBUTING.md) for details on our [`CODE OF CONDUCT`](CODE_OF_CONDUCT.md), and the process for submitting pull requests to us.
+> Please read [`CONTRIBUTING`](CONTRIBUTING.md) for details on our [`CODE OF CONDUCT`](CODE_OF_CONDUCT.md), and the
+> process for submitting pull requests to us.
 
-🆕 New to Open Source? 💡 Follow this [guide](https://opensource.guide/how-to-contribute/) to jumpstart your Open Source journey 🚀.
+🆕 New to Open Source? 💡 Follow this [guide](https://opensource.guide/how-to-contribute/) to jumpstart your Open Source
+journey 🚀.
 
 ## <a name="links">🔗 Links</a>
 
@@ -165,7 +170,8 @@ If you wish to contribute, you can,
 
 ## <a name="support">🙏Support</a>
 
-We all need support and motivation. `Bloggios` is not an exception. Please give this project repositories a ⭐️ to encourage and show that you liked it. Don't forget to leave a star ⭐️ before you move away.
+We all need support and motivation. `Bloggios` is not an exception. Please give this project repositories a ⭐️ to
+encourage and show that you liked it. Don't forget to leave a star ⭐️ before you move away.
 
 If you found the app helpful, consider supporting us with a coffee.
 
