@@ -29,7 +29,8 @@ public class WebMvc {
                 "https://bloggios.com",
                 "https://bloggios.in",
                 "https://www.bloggios.in",
-                "https://www.bloggios.com"
+                "https://www.bloggios.com",
+                "https://dev.bloggios.in"
         ));
         corsConfig.setMaxAge(3600L);
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
