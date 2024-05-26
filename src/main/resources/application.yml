@@ -31,6 +31,10 @@ spring:
           uri: lb://bloggios-mail-service
           predicates:
             - Path=/mail-service/**
+        - id: user-provider-application
+          uri: lb://user-provider-application
+          predicates:
+            - Path=/user-provider/**
 
 eureka:
   instance:
