@@ -35,6 +35,7 @@ public class WebMvc {
         corsConfig.setMaxAge(3600L);
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         corsConfig.addAllowedHeader("*");
+        corsConfig.addExposedHeader("cookie-token");
         corsConfig.setAllowCredentials(true);
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
