@@ -35,6 +35,10 @@ spring:
           uri: lb://user-provider-application
           predicates:
             - Path=/user-provider/**
+        - id: blog-provider-application
+          uri: lb://blog-provider-application
+          predicates:
+            - Path=/blog-provider/**
 
 eureka:
   instance:
