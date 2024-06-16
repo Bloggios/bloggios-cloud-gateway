@@ -1,4 +1,4 @@
-name: bloggios-cloud-gateway devsandbox
+name: bloggios-cloud-gateway
 
 on:
   push:
@@ -32,9 +32,9 @@ jobs:
       - name: Stopping Container
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.V4_HOST }}
-          username: ${{ secrets.V4_USERNAME }}
-          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          host: ${{ secrets.V8_HOST }}
+          username: ${{ secrets.V8_USERNAME }}
+          key: ${{ secrets.V8_VPS_PRIVATE_KEY }}
           port: 22
           script: |
             cd /root/bloggios-deployment-docker-files
@@ -48,9 +48,9 @@ jobs:
       - name: Copying Logback
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.V4_HOST }}
-          username: ${{ secrets.V4_USERNAME }}
-          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          host: ${{ secrets.V8_HOST }}
+          username: ${{ secrets.V8_USERNAME }}
+          key: ${{ secrets.V8_VPS_PRIVATE_KEY }}
           port: 22
           script: |
             rm /root/microservices/bloggios-cloud-gateway/src/main/resources/gateway-logback.xml
@@ -59,9 +59,9 @@ jobs:
       - name: Generating Docker Image for Bloggios
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.V4_HOST }}
-          username: ${{ secrets.V4_USERNAME }}
-          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          host: ${{ secrets.V8_HOST }}
+          username: ${{ secrets.V8_USERNAME }}
+          key: ${{ secrets.V8_VPS_PRIVATE_KEY }}
           port: 22
           script: |
             cd /root/microservices/bloggios-cloud-gateway
@@ -73,9 +73,9 @@ jobs:
       - name: Deploy Docker Image
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.V4_HOST }}
-          username: ${{ secrets.V4_USERNAME }}
-          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          host: ${{ secrets.V8_HOST }}
+          username: ${{ secrets.V8_USERNAME }}
+          key: ${{ secrets.V8_VPS_PRIVATE_KEY }}
           port: 22
           script: |
             cd /root/bloggios-deployment-docker-files
@@ -84,9 +84,9 @@ jobs:
       - name: Removing Targets
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.V4_HOST }}
-          username: ${{ secrets.V4_USERNAME }}
-          key: ${{ secrets.V4_VPS_PRIVATE_KEY }}
+          host: ${{ secrets.V8_HOST }}
+          username: ${{ secrets.V8_USERNAME }}
+          key: ${{ secrets.V8_VPS_PRIVATE_KEY }}
           port: 22
           script: |
             cd /root/microservices/bloggios-cloud-gateway
